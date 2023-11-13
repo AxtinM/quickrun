@@ -17,6 +17,8 @@ function M.setupNewBuf(input)
   vim.api.nvim_buf_set_option(new_buf, 'modifiable', false)
 
   vim.api.nvim_win_set_buf(0, new_buf)
+  vim.api.nvim_buf_set_keymap(new_buf, 'n', 'q', '<cmd>close!<CR>', { silent = true, noremap = true, nowait = true })
+
 end
 
 return M
