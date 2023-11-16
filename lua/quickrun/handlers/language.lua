@@ -31,7 +31,7 @@ function M.runFile(path)
     out = io.popen(SupportedLanguages.PYTHON[2] .. " " .. path .. " 2>&1")
 
   elseif ext == SupportedLanguages.LUA[3] then
-    out = io.popen( SupportedLanguages.LUA[2] .. " " .. path .. " 2>&1")
+    out = io.popen(SupportedLanguages.LUA[2] .. " " .. path .. " 2>&1")
   end
 
   result = out:read("*a")

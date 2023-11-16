@@ -27,11 +27,5 @@ function M.run()
   M.processTempFile(lines)
 end
 
-function M.setup()
-  -- Map a key in visual mode
-  vim.api.nvim_set_keymap('x', '<leader>r', ':lua quickrun.run()<CR>', { noremap = true, silent = true })
-  -- Map a key in visual line mode
-  vim.api.nvim_set_keymap('x', '<leader>R', ':lua quickrun.run()<CR>', { noremap = true, silent = true })
-end
-
 return M
+

@@ -19,18 +19,26 @@ Supercharge your Neovim experience with QuickRun, a versatile plugin designed fo
 Add the following to your Neovim configuration file:
 
 ```lua
-use {
-  'axtinm/quickrun',
-  config = function()
-    require('quickrun').setup()
-  end
-}
+use 'axtinm/quickrun'
 ```
+
+## Setup
+**Add this to your nvim config**
+```lua
+    local qrun = require("quickrun")
+
+    -- Map a key in visual mode
+    vim.keymap.set('x', '<leader>r', qrun.run, {})
+    -- Map a key in visual line mode
+    vim.keymap.set('x', '<leader>R', qrun.run, {})
+```
+
+
 
 ## Usage
 
 1. In visual mode, select the code you want to execute.
-2. Press the designated key (<leader>r | <leader>R).
+2. Press the designated key.
 3. Watch QuickRun do its thing!
 
 ## Future Roadmap
