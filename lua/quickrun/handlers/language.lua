@@ -6,7 +6,9 @@ SupportedLanguages = {
   LUA = {"lua", "lua", "lua"},
   JAVASCRIPT = {"javascript", "node", "js"},
   TYPESCRIPT = {"typescript", "node", "ts"},
+  RUST = {"rust", "rustc", "rs"},
 }
+
 
 function M.checkFileLanguage()
     local file_ext = vim.fn.expand('%:e')
@@ -19,26 +21,43 @@ function M.checkFileLanguage()
     return nil
 end
 
-function M.runFile(path)
-  local out, result
+
+function M.runInterpretedLanguageFile(cmd)
+  local handle = io.popen(cmd)
+  return handle
+end
+
+function M.runCompiledLanguageFile(cmd, fileName)
+  local handle = io.popen(cmd .. " " .. "./" .. vim.split(fileName, ".")[1])
+  return handle
+end
+
+function M.getFileHandle(path)
+  local cmd, handle
 
   local ext = M.checkFileLanguage()
   if ext == nil then
-    error("this language is not supported as of right now !")
+    error("This Language is not Supported as of right now !")
   end
 
   if ext == SupportedLanguages.PYTHON[3] then
-    out = io.popen(SupportedLanguages.PYTHON[2] .. " " .. path .. " 2>&1")
-
+    cmd = SupportedLanguages.PYTHON[2] .. " " .. path .. " 2>&1"
+    handle = M.runInterpretedLanguageFile(cmd)
   elseif ext == SupportedLanguages.LUA[3] then
-    out = io.popen(SupportedLanguages.LUA[2] .. " " .. path .. " 2>&1")
+    cmd = SupportedLanguages.LUA[2] .. " " .. path .. " 2>&1"
+    handle = M.runInterpretedLanguageFile(cmd)
+  elseif ext == SupportedLanguages.JAVASCRIPT[3] then
+    cmd = SupportedLanguages.JAVASCRIPT[2] .. " " .. path .. " 2>&1"
+    handle = M.runInterpretedLanguageFile(cmd)
+  elseif ext == SupportedLanguages.TYPESCRIPT[3] then
+    cmd = SupportedLanguages.TYPESCRIPT[2] .. " " .. path .. " 2>&1"
+    handle = M.runInterpretedLanguageFile(cmd)
+  elseif ext == SupportedLanguages.RUST[3] then
+    cmd = SupportedLanguages.RUST[2] .. " " .. path .. " 2>&1"
+    handle = M.runCompiledLanguageFile(cmd)
   end
 
-  result = out:read("*a")
-  out:close()
-
-  return vim.fn.split(result, "\n")
+  return handle
 end
 
 return M
-

@@ -1,25 +1,25 @@
 local handlers = require("quickrun.handlers")
+local config = require("quickrun.handlers.config")
 
 local M = {}
 
-function M.processTempFile(buf)
+function M.processTempFile(lines)
   local ext = handlers.language.checkFileLanguage()
-  local tempFileName = os.tmpname() .. "." .. ext
-  local tempFile = io.open(tempFileName, "w")
+  local fileHandler = handlers.helper.createTempFile(lines, ext)
 
-  if tempFile then
-    for _, line in ipairs(buf) do
-      tempFile:write(line .. "\n")
-    end
-  end
+  local file = fileHandler.tmpFile
+  local fileName = fileHandler.tmpFileName
 
-  -- get output after running the file
-  local out = handlers.language.runFile(tempFileName)
+  local handle = handlers.language.getFileHandle(fileName)
+  local buf = handlers.helper.createBufWindow()
+  handlers.helper.writeToBuffer(handle, buf)
 
-  handlers.helper.setupNewBuf(out)
+  handle:close()
+  os.remove(fileName)
+end
 
-  tempFile:close()
-  os.remove(tempFileName)
+function M.setup(options)
+  config.setup(options)
 end
 
 function M.run()
@@ -28,4 +28,3 @@ function M.run()
 end
 
 return M
-
