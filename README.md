@@ -19,7 +19,7 @@ Supercharge your Neovim experience with QuickRun, a versatile plugin designed fo
 Add the following to your Neovim configuration file:
 
 ```lua
-use 'axtinm/quickrun'
+use {'axtinm/quickrun', config = function() require('quickrun').setup() end}
 ```
 
 ## Setup
@@ -33,7 +33,26 @@ use 'axtinm/quickrun'
     vim.keymap.set('x', '<leader>R', qrun.run, {})
 ```
 
-
+## Custom Configuration
+**if you want to customize your own quickrun display, then you can delete config (key=value) in you're packer file**
+#### Packer
+```lua
+use {'axtinm/quickrun'}
+```
+#### Config File Setup
+```lua
+    local qrun = require("quickrun")
+    qrun.setup({
+        style = "popup", -- 'popup' or 'attached'
+        position = "bottom", -- 'bottom', 'top', 'left', 'right'
+        width = 80,
+        height = 24,
+        })
+    -- Map a key in visual mode
+    vim.keymap.set('x', '<leader>r', qrun.run, {})
+    -- Map a key in visual line mode
+    vim.keymap.set('x', '<leader>R', qrun.run, {})
+```
 
 ## Usage
 
@@ -44,7 +63,6 @@ use 'axtinm/quickrun'
 ## Future Roadmap
 
 - **Expanded Language Support**: More languages will be added based on user demand.
-- **Advanced Error Handling**: Enhance your debugging experience with robust error handling features.
 - **User-Driven Improvements**: Open to suggestions and contributions! Share your ideas and let's make QuickRun even better.
 
 ## Contribution
